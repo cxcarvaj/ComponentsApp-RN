@@ -1,14 +1,8 @@
-import React from 'react';
-import {
-  Animated,
-  Easing,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import {colors} from '../../../config/theme/theme';
+import React, {useContext} from 'react';
+import {Animated, Easing, StyleSheet} from 'react-native';
 import {useAnimation} from '../../hooks/useAnimation';
+import {ThemeContext} from '../../context/ThemeContext';
+import {Button, CustomView} from '../../components';
 
 export const Animation101Screen = () => {
   const marginTop = 10;
@@ -20,16 +14,23 @@ export const Animation101Screen = () => {
     startMovingTopPosition,
   } = useAnimation();
 
+  const {colors} = useContext(ThemeContext);
+
   return (
-    <View style={styles.container}>
+    <CustomView styles={styles.container}>
       <Animated.View
         style={[
           styles.purpleBox,
-          {opacity: animatedOpacity, transform: [{translateY: animatedTop}]},
+          {
+            backgroundColor: colors.primary,
+            opacity: animatedOpacity,
+            transform: [{translateY: animatedTop}],
+          },
         ]}
       />
 
-      <Pressable
+      <Button
+        text="Fade In"
         onPress={() => {
           fadeIn({});
           startMovingTopPosition({
@@ -38,14 +39,15 @@ export const Animation101Screen = () => {
             duration: 750,
           });
         }}
-        style={{marginTop: marginTop}}>
-        <Text>Fade In</Text>
-      </Pressable>
+        styles={{marginTop: marginTop}}
+      />
 
-      <Pressable onPress={() => fadeOut({})} style={{marginTop: marginTop}}>
-        <Text>Fade Out</Text>
-      </Pressable>
-    </View>
+      <Button
+        onPress={() => fadeOut({})}
+        text="Fade Out"
+        styles={{marginTop: marginTop}}
+      />
+    </CustomView>
   );
 };
 
@@ -57,7 +59,6 @@ const styles = StyleSheet.create({
   },
 
   purpleBox: {
-    backgroundColor: colors.primary,
     width: 150,
     height: 150,
   },
