@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useContext, useRef, useState} from 'react';
 import {
   Image,
   ImageSourcePropType,
@@ -11,11 +11,12 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import {colors, globalStyles} from '../../../config/theme/theme';
+import {globalStyles} from '../../../config/theme/theme';
 import {FlatList} from 'react-native-gesture-handler';
 import {ViewStyle} from 'react-native';
-import {Button} from '../../components';
+import {Button, CustomView} from '../../components';
 import {useNavigation} from '@react-navigation/native';
+import {ThemeContext} from '../../context/ThemeContext';
 
 interface Slide {
   title: string;
@@ -45,6 +46,7 @@ export const SlidesScreen = () => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const navigation = useNavigation();
+  const {colors} = useContext(ThemeContext);
 
   const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const {contentOffset, layoutMeasurement} = event.nativeEvent;
@@ -101,10 +103,11 @@ interface SlideItemProps {
 const SlideItem = ({item}: SlideItemProps) => {
   const {width} = useWindowDimensions();
   const {title, desc, img} = item;
+  const {colors} = useContext(ThemeContext);
 
   const viewStyles: StyleProp<ViewStyle> = {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: colors.cardBackground,
     borderRadius: 5,
     padding: 40,
     justifyContent: 'center',
@@ -128,10 +131,10 @@ const SlideItem = ({item}: SlideItemProps) => {
   ];
 
   return (
-    <View style={viewStyles}>
+    <CustomView styles={viewStyles}>
       <Image source={img} style={imgStyle} />
       <Text style={titleStyles}>{title}</Text>
       <Text style={descStyles}>{desc}</Text>
-    </View>
+    </CustomView>
   );
 };

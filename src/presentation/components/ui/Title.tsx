@@ -15,8 +15,6 @@ export const Title = ({text, isSafe, isWhite}: Props) => {
 
   const {top} = useSafeAreaInsets();
 
-  console.log(colors);
-
   return (
     <Text
       style={{
